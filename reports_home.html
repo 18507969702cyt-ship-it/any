@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Video Agent 产品理想态：研究报告中心，汇集产品需求文档与深度研究报告。">
+<title>Video Agent 产品理想态｜研究报告中心</title>
+<style>
+:root{
+  --bg:#0f1626;--panel:#182238;--panel2:#1e2b45;--line:#2a3a5c;
+  --ink:#e8edf7;--muted:#93a3c0;--brand:#7b6cf6;--brand2:#2fd3b8;
+  --violet:#8a7dff;--teal:#2fd3b8;--amber:#f2b64d;--pink:#f26d9c;
+  --shadow:0 18px 50px rgba(0,0,0,.35);--radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+  background-image:radial-gradient(900px 480px at 85% -10%,rgba(123,108,246,.16),transparent 60%),radial-gradient(800px 420px at -10% 30%,rgba(47,211,184,.10),transparent 55%),radial-gradient(700px 500px at 60% 110%,rgba(242,182,77,.08),transparent 60%);
+  background-attachment:fixed;}
+a{color:var(--brand);text-decoration:none}
+
+/* Header */
+header{max-width:1120px;margin:0 auto;padding:64px 28px 28px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:2px;background:linear-gradient(90deg,var(--brand2),transparent);border-radius:2px}
+h1{font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03em;margin:16px 0 12px;background:linear-gradient(120deg,#fff 30%,#a99bff 65%,#5fe8d0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:17px;color:var(--muted);max-width:760px;margin:0 0 26px}
+.stats{display:flex;gap:14px;flex-wrap:wrap}
+.stat{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(30,43,69,.6);border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--muted)}
+.stat b{color:var(--ink);font-size:14px}
+.stat i{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(47,211,184,.14)}
+
+/* Toolbar */
+.toolbar{max-width:1120px;margin:22px auto 0;padding:0 28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 16px;font-size:13px;cursor:pointer;transition:.2s}
+.filter-btn:hover{border-color:var(--brand);color:var(--ink)}
+.filter-btn.active{background:linear-gradient(135deg,var(--brand),#5a4bd6);border-color:transparent;color:#fff;font-weight:700;box-shadow:0 8px 20px rgba(123,108,246,.35)}
+.search-box{margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 15px}
+.search-box input{background:none;border:0;outline:none;color:var(--ink);font-size:13px;width:170px}
+.search-box input::placeholder{color:#5d6d8c}
+.search-box svg{width:15px;height:15px;fill:#5d6d8c}
+
+/* Cards */
+main{max-width:1120px;margin:0 auto;padding:26px 28px 70px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+.card{position:relative;display:flex;flex-direction:column;background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:transform .22s,border-color .22s,box-shadow .22s;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--accent,#8a7dff),transparent 70%);opacity:.85}
+.card:hover{transform:translateY(-5px);border-color:var(--accent,#8a7dff);box-shadow:0 26px 60px rgba(0,0,0,.45)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.type-tag{font-size:11px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:999px;background:rgba(138,125,255,.14);color:var(--accent,#b3a8ff);border:1px solid rgba(138,125,255,.3)}
+.date-tag{font-size:12px;color:var(--muted);white-space:nowrap}
+.card h2{margin:0 0 10px;font-size:19px;line-height:1.4;letter-spacing:-.01em;color:#fff}
+.card .desc{margin:0 0 16px;color:var(--muted);font-size:13.5px;line-height:1.7;flex:1}
+.meta-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.meta{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:3px 8px;background:rgba(15,22,38,.5)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:16px}
+.open-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent,#8a7dff),var(--accent2,#5a4bd6));color:#fff;font-weight:800;font-size:13.5px;border-radius:11px;padding:10px 18px;transition:.2s;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.open-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.4)}
+.open-btn svg{width:14px;height:14px;fill:#fff}
+.copy-link{font-size:11.5px;color:#5d6d8c;cursor:pointer;transition:.2s;background:none;border:0;display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border-radius:8px}
+.copy-link:hover{color:var(--teal);background:rgba(47,211,184,.08)}
+.copy-link svg{width:13px;height:13px;fill:currentColor}
+
+/* Empty state */
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--radius);display:none}
+
+/* Footer */
+footer{max-width:1120px;margin:0 auto;padding:0 28px 40px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#4d5c7a;font-size:12px;border-top:1px solid rgba(42,58,92,.6);padding-top:24px}
+
+@media(max-width:640px){
+  header{padding:44px 20px 20px}
+  h1{font-size:34px}
+  .toolbar{padding:0 20px}
+  main{padding:20px 20px 50px}
+  .grid{grid-template-columns:1fr}
+  .search-box{width:100%;margin:4px 0 0}
+  .search-box input{width:100%}
+  footer{padding:20px 20px 30px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Video Agent 产品理想态 · 研究报告中心</div>
+  <h1>Video Agent 产品理想态</h1>
+  <p class="lede">面向叙事类视频创作与 AI-native Creative Operating System 的产品战略、架构与深度研究档案。持续汇集需求文档、深度调研与蓝图报告。</p>
+  <div class="stats">
+    <span class="stat"><i></i>共 <b id="stat-total">0</b> 份报告</span>
+    <span class="stat">最近更新 <b id="stat-latest">-</b></span>
+    <span class="stat">聚焦 <b>叙事视频 → 全模态创作</b></span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="PRD">产品需求文档</button>
+  <button class="filter-btn" data-filter="Research">深度研究</button>
+  <div class="search-box">
+    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+    <input id="search" type="text" placeholder="搜索报告标题 / 关键词…">
+  </div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty">未找到匹配的报告</div>
+</main>
+
+<footer>
+  <span>Video Agent 产品理想态 · 内部研究报告档案</span>
+  <span>维护：在主页面 <code>reports_home.html</code> 的 <code>REPORTS</code> 数组中追加条目即可发布新报告</span>
+</footer>
+
+<script>
+// ============================================================
+// 报告数据（未来新增报告，只需在此数组追加一个条目即可）
+// 字段说明：
+//   id        唯一标识（英文/数字）
+//   title     报告标题
+//   desc      一句话摘要
+//   type      "PRD"（产品需求文档）或 "Research"（深度研究）
+//   date      发布日期，格式 YYYY-MM-DD
+//   url       报告 HTML 的访问路径
+//   tags      附加标签（自动展示）
+// ============================================================
+const REPORTS = [
+  {
+    id: "lumen-creator-prd",
+    title: "Lumen 创作 Agent 产品需求文档",
+    desc: "Lumen 创作 Agent 的完整 PRD：短期聚焦叙事类视频创作，长期构建全模态内容创作 Agent。涵盖现状架构判断、行业研究信号、产品战略、用户与核心场景、目标体验与流程、详细需求、目标系统架构、指标评测与路线图。",
+    type: "PRD",
+    date: "2026-08-15",
+    url: "Lumen_Creator_Agent_PRD_2026-08-15.html",
+    tags: ["产品需求", "PRD", "路线图"]
+  },
+  {
+    id: "creator-agent-ideal-state",
+    title: "创作 Agent 理想态｜深度研究与产品蓝图",
+    desc: "基于外部 Video Agent、创作 Agent 与 Lumen 现有架构的深度研究报告。提出从 Video Agent 到 AI-native Creative Operating System 的系统蓝图，覆盖产品范式、Creative OS 架构、创作中间表示 CIR、理想工作台、运行时记忆与评测、分阶段路线图。",
+    type: "Research",
+    date: "2026-08-15",
+    url: "Creator_Agent_Ideal_State_Deep_Research_2026-08-15.html",
+    tags: ["深度研究", "架构蓝图", "Creative OS"]
+  },
+  {
+    id: "skill-design-analysis",
+    title: "创作 Agent 架构 · Skill 设计分析报告",
+    desc: "面向故事短片垂类的创作 Agent Skill 体系设计分析。围绕叙事类视频创作流程，拆解主 Agent 与脚本、分镜、视频、图像等子 Skill 的分层架构与编排机制，给出 Skill 化创作流程的实现建议与演进方向。",
+    type: "Research",
+    date: "2026-08-24",
+    url: "Creator_Agent_Skill_Design_Analysis_Report.html",
+    tags: ["Skill 设计", "架构分析", "故事短片"]
+  }
+];
+
+// ============================================================
+// 渲染逻辑（无需修改）
+// ============================================================
+const TYPES = {
+  "PRD":      { label: "产品需求文档", color: "#8a7dff", color2: "#5a4bd6" },
+  "Research": { label: "深度研究",     color: "#2fd3b8", color2: "#1ba88f" }
+};
+
+const grid = document.getElementById("grid");
+const empty = document.getElementById("empty");
+const searchInput = document.getElementById("search");
+let currentFilter = "all";
+let currentQuery = "";
+
+function fmtDate(d){
+  const [y,m,dd] = d.split("-");
+  return `${y}.${m}.${dd}`;
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function render(){
+  const q = currentQuery.trim().toLowerCase();
+  const list = REPORTS.filter(r => {
+    const okType = currentFilter === "all" || r.type === currentFilter;
+    const okQuery = !q || (r.title + r.desc + r.tags.join(" ") + r.date).toLowerCase().includes(q);
+    return okType && okQuery;
+  });
+
+  // 按日期倒序
+  list.sort((a,b) => b.date.localeCompare(a.date));
+
+  grid.innerHTML = list.map(r => {
+    const t = TYPES[r.type] || TYPES.Research;
+    const tags = (r.tags || []).map(tag => `<span class="meta">${escapeHtml(tag)}</span>`).join("");
+    return `
+    <article class="card" style="--accent:${t.color};--accent2:${t.color2}">
+      <div class="card-top">
+        <span class="type-tag">${t.label}</span>
+        <span class="date-tag">${fmtDate(r.date)}</span>
+      </div>
+      <h2>${escapeHtml(r.title)}</h2>
+      <p class="desc">${escapeHtml(r.desc)}</p>
+      <div class="meta-row">${tags}</div>
+      <div class="card-footer">
+        <a class="open-btn" href="${r.url}" target="_blank">
+          阅读报告
+          <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3zm-9 3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7h-2v7H5V8h7V6z"/></svg>
+        </a>
+        <button class="copy-link" data-url="${r.url}" title="复制链接">
+          <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11z"/></svg>
+          复制链接
+        </button>
+      </div>
+    </article>`;
+  }).join("");
+
+  empty.style.display = list.length ? "none" : "block";
+}
+
+function updateStats(){
+  document.getElementById("stat-total").textContent = REPORTS.length;
+  const latest = REPORTS.map(r => r.date).sort().pop();
+  document.getElementById("stat-latest").textContent = fmtDate(latest || "2026-01-01");
+}
+
+// 筛选
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+// 搜索
+searchInput.addEventListener("input", () => {
+  currentQuery = searchInput.value;
+  render();
+});
+
+// 复制链接
+grid.addEventListener("click", e => {
+  const btn = e.target.closest(".copy-link");
+  if(!btn) return;
+  const full = location.href.split("/").slice(0,-1).join("/") + "/" + btn.dataset.url;
+  navigator.clipboard.writeText(full).then(() => {
+    const old = btn.innerHTML;
+    btn.innerHTML = "✓ 已复制";
+    setTimeout(() => { btn.innerHTML = old; }, 1600);
+  });
+});
+
+render();
+updateStats();
+</script>
+</body>
+</html>

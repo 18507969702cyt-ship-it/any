@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Agent 资料库：汇集 Agent 架构设计、Skill 体系、技术方案与深度研究报告，持续沉淀 Agent 工程资料。">
+<title>Agent 资料｜知识文档中心</title>
+<style>
+:root{
+  --bg:#0b1220;--panel:#111c31;--panel2:#182742;--line:#243a5c;
+  --ink:#e8eef9;--muted:#8fa3c4;--brand:#22d3ee;--brand2:#818cf8;
+  --violet:#a78bfa;--teal:#2dd4bf;--amber:#f2b64d;--pink:#f472b6;
+  --shadow:0 18px 50px rgba(0,0,0,.35);--radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+  background-image:radial-gradient(900px 480px at 88% -12%,rgba(34,211,238,.15),transparent 60%),radial-gradient(800px 420px at -10% 32%,rgba(129,140,248,.12),transparent 55%),radial-gradient(700px 500px at 62% 112%,rgba(242,182,77,.07),transparent 60%);
+  background-attachment:fixed;}
+a{color:var(--brand);text-decoration:none}
+
+/* Header */
+header{max-width:1120px;margin:0 auto;padding:64px 28px 28px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:2px;background:linear-gradient(90deg,var(--brand),transparent);border-radius:2px}
+h1{font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03em;margin:16px 0 12px;background:linear-gradient(120deg,#fff 30%,#7ee7ff 60%,#b3a8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:17px;color:var(--muted);max-width:780px;margin:0 0 26px}
+.stats{display:flex;gap:14px;flex-wrap:wrap}
+.stat{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(24,39,66,.6);border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--muted)}
+.stat b{color:var(--ink);font-size:14px}
+.stat i{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(34,211,238,.14)}
+
+/* Toolbar */
+.toolbar{max-width:1120px;margin:22px auto 0;padding:0 28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 16px;font-size:13px;cursor:pointer;transition:.2s}
+.filter-btn:hover{border-color:var(--brand);color:var(--ink)}
+.filter-btn.active{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#06121f;font-weight:800;box-shadow:0 8px 20px rgba(34,211,238,.3)}
+.search-box{margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 15px}
+.search-box input{background:none;border:0;outline:none;color:var(--ink);font-size:13px;width:170px}
+.search-box input::placeholder{color:#5d6d8c}
+.search-box svg{width:15px;height:15px;fill:#5d6d8c}
+
+/* Cards */
+main{max-width:1120px;margin:0 auto;padding:26px 28px 70px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+.card{position:relative;display:flex;flex-direction:column;background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:transform .22s,border-color .22s,box-shadow .22s;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--accent,#22d3ee),transparent 70%);opacity:.85}
+.card:hover{transform:translateY(-5px);border-color:var(--accent,#22d3ee);box-shadow:0 26px 60px rgba(0,0,0,.45)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.type-tag{font-size:11px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:999px;background:rgba(34,211,238,.14);color:var(--accent,#7ee7ff);border:1px solid rgba(34,211,238,.3)}
+.date-tag{font-size:12px;color:var(--muted);white-space:nowrap}
+.card h2{margin:0 0 10px;font-size:19px;line-height:1.4;letter-spacing:-.01em;color:#fff}
+.card .desc{margin:0 0 16px;color:var(--muted);font-size:13.5px;line-height:1.7;flex:1}
+.meta-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.meta{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:3px 8px;background:rgba(11,18,32,.5)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:16px}
+.open-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent,#22d3ee),var(--accent2,#4f46e5));color:#06121f;font-weight:800;font-size:13.5px;border-radius:11px;padding:10px 18px;transition:.2s;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.open-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.4)}
+.open-btn svg{width:14px;height:14px;fill:currentColor}
+.copy-link{font-size:11.5px;color:#5d6d8c;cursor:pointer;transition:.2s;background:none;border:0;display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border-radius:8px}
+.copy-link:hover{color:var(--teal);background:rgba(45,212,191,.08)}
+.copy-link svg{width:13px;height:13px;fill:currentColor}
+
+/* Empty state */
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--radius);display:none}
+
+/* Footer */
+footer{max-width:1120px;margin:0 auto;padding:0 28px 40px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#4d5c7a;font-size:12px;border-top:1px solid rgba(36,58,92,.6);padding-top:24px}
+
+@media(max-width:640px){
+  header{padding:44px 20px 20px}
+  h1{font-size:34px}
+  .toolbar{padding:0 20px}
+  main{padding:20px 20px 50px}
+  .grid{grid-template-columns:1fr}
+  .search-box{width:100%;margin:4px 0 0}
+  .search-box input{width:100%}
+  footer{padding:20px 20px 30px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Agent 资料库 · Knowledge Hub</div>
+  <h1>Agent 资料</h1>
+  <p class="lede">汇集 Agent 架构设计、Skill 体系、技术方案与深度研究报告，持续沉淀 Agent 工程与创作智能体领域的一手资料。</p>
+  <div class="stats">
+    <span class="stat"><i></i>共 <b id="stat-total">0</b> 份资料</span>
+    <span class="stat">最近更新 <b id="stat-latest">-</b></span>
+    <span class="stat">聚焦 <b>Agent 工程 · Skill 体系</b></span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="architecture">架构分析</button>
+  <button class="filter-btn" data-filter="skill">Skill 设计</button>
+  <button class="filter-btn" data-filter="research">深度研究</button>
+  <div class="search-box">
+    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+    <input id="search" type="text" placeholder="搜索资料标题 / 关键词…">
+  </div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty">未找到匹配的资料</div>
+</main>
+
+<footer>
+  <span>Agent 资料库 · 内部知识文档中心</span>
+  <span>维护：在主页面 <code>agent_docs_home.html</code> 的 <code>DOCS</code> 数组中追加条目即可发布新资料</span>
+</footer>
+
+<script>
+// ============================================================
+// 资料数据（未来新增资料，只需在此数组追加一个条目即可）
+// 字段说明：
+//   id        唯一标识（英文/数字）
+//   title     资料标题
+//   desc      一句话摘要
+//   type      "architecture"（架构分析）| "skill"（Skill 设计）| "research"（深度研究）
+//   date      发布日期，格式 YYYY-MM-DD
+//   url       资料 HTML 的访问路径
+//   tags      附加标签（自动展示）
+// ============================================================
+const DOCS = [
+  {
+    id: "skill-design-analysis",
+    title: "创作 Agent 架构 · Skill 设计分析报告",
+    desc: "面向故事短片垂类的创作 Agent Skill 体系设计分析。围绕叙事类视频创作流程，拆解主 Agent 与脚本、分镜、视频、图像等子 Skill 的分层架构与编排机制，给出 Skill 化创作流程的实现建议与演进方向。",
+    type: "skill",
+    date: "2026-08-24",
+    url: "Creator_Agent_Skill_Design_Analysis_Report.html",
+    tags: ["架构分析", "Skill 设计", "故事短片"]
+  }
+];
+
+// ============================================================
+// 渲染逻辑（无需修改）
+// ============================================================
+const TYPES = {
+  "architecture": { label: "架构分析",   color: "#818cf8", color2: "#5a4bd6" },
+  "skill":        { label: "Skill 设计", color: "#22d3ee", color2: "#0ea5b7" },
+  "research":     { label: "深度研究",   color: "#2dd4bf", color2: "#0d9488" }
+};
+
+const grid = document.getElementById("grid");
+const empty = document.getElementById("empty");
+const searchInput = document.getElementById("search");
+let currentFilter = "all";
+let currentQuery = "";
+
+function fmtDate(d){
+  const [y,m,dd] = d.split("-");
+  return `${y}.${m}.${dd}`;
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function render(){
+  const q = currentQuery.trim().toLowerCase();
+  const list = DOCS.filter(d => {
+    const okType = currentFilter === "all" || d.type === currentFilter;
+    const okQuery = !q || (d.title + d.desc + d.tags.join(" ") + d.date).toLowerCase().includes(q);
+    return okType && okQuery;
+  });
+
+  // 按日期倒序
+  list.sort((a,b) => b.date.localeCompare(a.date));
+
+  grid.innerHTML = list.map(d => {
+    const t = TYPES[d.type] || TYPES.research;
+    const tags = (d.tags || []).map(tag => `<span class="meta">${escapeHtml(tag)}</span>`).join("");
+    return `
+    <article class="card" style="--accent:${t.color};--accent2:${t.color2}">
+      <div class="card-top">
+        <span class="type-tag">${t.label}</span>
+        <span class="date-tag">${fmtDate(d.date)}</span>
+      </div>
+      <h2>${escapeHtml(d.title)}</h2>
+      <p class="desc">${escapeHtml(d.desc)}</p>
+      <div class="meta-row">${tags}</div>
+      <div class="card-footer">
+        <a class="open-btn" href="${d.url}" target="_blank">
+          阅读资料
+          <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3zm-9 3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7h-2v7H5V8h7V6z"/></svg>
+        </a>
+        <button class="copy-link" data-url="${d.url}" title="复制链接">
+          <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11z"/></svg>
+          复制链接
+        </button>
+      </div>
+    </article>`;
+  }).join("");
+
+  empty.style.display = list.length ? "none" : "block";
+}
+
+function updateStats(){
+  document.getElementById("stat-total").textContent = DOCS.length;
+  const latest = DOCS.map(d => d.date).sort().pop();
+  document.getElementById("stat-latest").textContent = fmtDate(latest || "2026-01-01");
+}
+
+// 筛选
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+// 搜索
+searchInput.addEventListener("input", () => {
+  currentQuery = searchInput.value;
+  render();
+});
+
+// 复制链接
+grid.addEventListener("click", e => {
+  const btn = e.target.closest(".copy-link");
+  if(!btn) return;
+  const full = location.href.split("/").slice(0,-1).join("/") + "/" + btn.dataset.url;
+  navigator.clipboard.writeText(full).then(() => {
+    const old = btn.innerHTML;
+    btn.innerHTML = "✓ 已复制";
+    setTimeout(() => { btn.innerHTML = old; }, 1600);
+  });
+});
+
+render();
+updateStats();
+</script>
+</body>
+</html>
